@@ -1,0 +1,17 @@
+[package]
+name = "axum-open-api"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+axum-core = "0.2.1"
+axum = "0.5.1"
+okapi = "0.7.0-rc.1"
+schemars = "0.8.8"
+tower = { version = "0.4.11", default-features = false, features = ["util", "buffer", "make"] }
+http = "0.2.6"
+hyper = "0.14"
+
+[dev-dependencies]
+tokio = { version = "1", features = ['full']}
+serde = "1.0"
