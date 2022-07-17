@@ -1,0 +1,75 @@
+---
+source: src/lib.rs
+expression: oapi
+---
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "",
+    "version": ""
+  },
+  "paths": {
+    "/identity": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "SomeJsonBody",
+                "type": "object",
+                "required": [
+                  "bar",
+                  "baz",
+                  "foo"
+                ],
+                "properties": {
+                  "bar": {
+                    "type": "string"
+                  },
+                  "baz": {
+                    "type": "boolean"
+                  },
+                  "foo": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "SomeJsonBody",
+                  "type": "object",
+                  "required": [
+                    "bar",
+                    "baz",
+                    "foo"
+                  ],
+                  "properties": {
+                    "bar": {
+                      "type": "string"
+                    },
+                    "baz": {
+                      "type": "boolean"
+                    },
+                    "foo": {
+                      "type": "integer",
+                      "format": "int32"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

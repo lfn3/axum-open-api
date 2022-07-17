@@ -1,0 +1,43 @@
+---
+source: src/lib.rs
+expression: oapi
+---
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "",
+    "version": ""
+  },
+  "paths": {
+    "/test/{id}/{id2}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {}
+        },
+        {
+          "name": "id2",
+          "in": "path",
+          "required": true,
+          "schema": {}
+        }
+      ]
+    }
+  }
+}

@@ -383,7 +383,15 @@ fn path_params_to_bracket_wrapped(path: &str) -> String {
 
 #[cfg(test)]
 mod tests {
-    use crate::{extract_path_params, path_params_to_bracket_wrapped, PathParam};
+    use axum::{extract::Path, Json};
+    use insta::assert_json_snapshot;
+    use schemars::JsonSchema;
+    use serde::{Deserialize, Serialize};
+
+    use crate::{
+        extract_path_params, path_params_to_bracket_wrapped, IntoOpenApiResponse, OpenApiRouter,
+        PathParam,
+    };
 
     #[test]
     fn path_params_to_bracket_wrapped_should_handle_empty_strings() {
@@ -491,5 +499,58 @@ mod tests {
             },
         ];
         assert_eq!(extract_path_params(":test/one/:two/"), expected)
+    }
+
+    #[test]
+    fn open_api_schema_path_parameters() {
+        async fn handler(Path(_id): Path<String>) -> String {
+            todo!("Should not be called")
+        }
+
+        let oar = OpenApiRouter::new().route("/test/:id/:id2", crate::get(handler));
+
+        let oapi = oar.to_open_api();
+
+        assert_json_snapshot!(oapi)
+    }
+
+    #[test]
+    fn open_api_schema_request_parameters() {
+        #[derive(JsonSchema, Serialize, Deserialize)]
+        struct SomeJsonBody {
+            foo: i32,
+            bar: String,
+            baz: bool,
+        }
+
+        async fn handler(Json(body): Json<SomeJsonBody>) -> impl IntoOpenApiResponse {
+            Json(body)
+        }
+
+        let oar = OpenApiRouter::new().route("/identity", crate::post(handler));
+
+        let oapi = oar.to_open_api();
+
+        assert_json_snapshot!(oapi)
+    }
+
+    #[test]
+    fn open_api_schema_response() {
+        #[derive(JsonSchema, Serialize, Deserialize)]
+        struct SomeJsonBody {
+            foo: i32,
+            bar: String,
+            baz: bool,
+        }
+
+        async fn handler(Json(body): Json<SomeJsonBody>) -> impl IntoOpenApiResponse {
+            Json(body)
+        }
+
+        let oar = OpenApiRouter::new().route("/test", crate::get(handler));
+
+        let oapi = oar.to_open_api();
+
+        assert_json_snapshot!(oapi)
     }
 }
